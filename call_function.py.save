@@ -1,0 +1,68 @@
+from google.genai import types
+from functions.get_files_info import schema_get_files_info
+
+# 1. Define the new schemas
+schema_get_file_content = {
+    "name": "get_file_content",
+    "description": "Read the content of a specific file",
+    "parameters": {
+        "type": "OBJECT",
+        "properties": {
+            "file_path": {
+                "type": "STRING", 
+                "description": "The path to the file to read"
+            }
+        },
+        "required": ["file_path"]
+    }
+}
+
+schema_run_python_file = {
+    "name": "run_python_file",
+    "description": "Execute a Python script with optional arguments",
+    "parameters": {
+        "type": "OBJECT",
+        "properties": {
+            "file_path": {
+                "type": "STRING", 
+                "description": "The path to the .py file"
+            },
+            "args": {
+                "type": "ARRAY",
+                "items": {"type": "STRING"},
+                "description": "List of string arguments to pass to the script"
+            }
+        },
+        "required": ["file_path"]
+    }
+}
+
+schema_write_file = {
+    "name": "write_file",
+    "description": "Write or overwrite content to a file",
+    "parameters": {
+        "type": "OBJECT",
+        "properties": {
+            "file_path": {
+                "type": "STRING", 
+                "description": "The path where the file should be saved"
+            },
+            "content": {
+                "type": "STRING", 
+                "description": "The text content to write to the file"
+            }
+        },
+        "required": ["file_path", "content"]
+    }
+}
+
+# 2. Update the Tool to include all four declarations
+available_functions = types.Tool(
+    function_declarations=[
+        schema_get_files_info,
+        schema_get_file_content,
+        schema_run_python_file,
+        schema_write_file
+    ],
+)
+bootdev run a77eebdf-74c6-40f4-8d83-c52224c41766 -s
